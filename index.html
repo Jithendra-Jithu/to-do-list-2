@@ -4,21 +4,37 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do List</title>
+    <title>Advanced To-Do List</title>
     <link rel="stylesheet" href="./style/style.css">
 </head>
 <body>
     <div class="container">
         <div class="todo-app">
-            <h2>To-Do List <img src="./images/icon.png"></h2>
+            <h2>To-Do List <img src="./images/icon.png" alt="To-Do Icon"></h2>
             <div class="row">
                 <input type="text" id="input-box" placeholder="Add your task here">
+                <select id="category-select">
+                    <option value="work">Work</option>
+                    <option value="personal">Personal</option>
+                    <option value="shopping">Shopping</option>
+                </select>
                 <button onclick="addTask()">Add</button>
+            </div>
+            <div class="progress-container">
+                <p id="progress-label">Completion: 0%</p>
+                <div class="progress-bar">
+                    <div class="progress"></div>
+                </div>
+            </div>
+            <div class="search-container">
+                <input type="text" id="search-box" placeholder="Search tasks..." oninput="searchTasks()">
             </div>
             <ul id="list-container"></ul>
             <div class="task-footer">
                 <p id="task-counter">Total: 0 | Completed: 0</p>
                 <button onclick="clearTasks()">Clear All</button>
+                <button onclick="changeBackground()">Change Background</button>
+                
             </div>
         </div>
     </div>

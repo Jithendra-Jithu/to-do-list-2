@@ -1,102 +1,82 @@
 // References
 const inputBox = document.getElementById('input-box');
+const categorySelect = document.getElementById('category-select');
 const listContainer = document.getElementById('list-container');
 const taskCounter = document.getElementById('task-counter');
+const progressBar = document.querySelector('.progress');
+const progressLabel = document.getElementById('progress-label');
 
-// Load tasks from localStorage
-window.onload = () => {
-    loadTasks();
-    updateCounter();
-};
-
-// Add a task
+// Add Task
 function addTask() {
     const taskText = inputBox.value.trim();
+    const category = categorySelect.value;
+
     if (taskText === '') {
         alert('Please enter a task!');
         return;
     }
 
     const taskItem = document.createElement('li');
-    taskItem.textContent = taskText;
-
-    const deleteBtn = document.createElement('span');
-    deleteBtn.textContent = '✖';
-    deleteBtn.classList.add('delete-btn');
-    deleteBtn.onclick = () => {
-        taskItem.remove();
-        saveTasks();
-        updateCounter();
-    };
-
-    taskItem.appendChild(deleteBtn);
-    taskItem.onclick = () => {
-        taskItem.classList.toggle('checked');
-        saveTasks();
-        updateCounter();
-    };
-
+    taskItem.innerHTML = `${taskText} <small>[${category}]</small> <span class="delete-btn" onclick="deleteTask(this)">✖</span>`;
+    taskItem.onclick = toggleComplete;
     listContainer.appendChild(taskItem);
+
     inputBox.value = '';
-    saveTasks();
     updateCounter();
+    updateProgress();
 }
 
-// Update task counter
+// Delete Task
+function deleteTask(deleteButton) {
+    deleteButton.parentElement.remove();
+    updateCounter();
+    updateProgress();
+}
+
+// Toggle Completion
+function toggleComplete() {
+    this.classList.toggle('checked');
+    updateCounter();
+    updateProgress();
+}
+
+// Update Counter
 function updateCounter() {
     const totalTasks = listContainer.children.length;
     const completedTasks = document.querySelectorAll('.checked').length;
     taskCounter.textContent = `Total: ${totalTasks} | Completed: ${completedTasks}`;
 }
 
-// Save tasks to localStorage
-function saveTasks() {
-    const tasks = [];
-    listContainer.childNodes.forEach(task => {
-        tasks.push({
-            text: task.textContent.slice(0, -1), // Remove delete button text
-            checked: task.classList.contains('checked'),
-        });
-    });
-    localStorage.setItem('tasks', JSON.stringify(tasks));
+// Update Progress
+function updateProgress() {
+    const totalTasks = listContainer.children.length;
+    const completedTasks = document.querySelectorAll('.checked').length;
+    const progress = totalTasks === 0 ? 0 : (completedTasks / totalTasks) * 100;
+    progressBar.style.width = `${progress}%`;
+    progressLabel.textContent = `Completion: ${Math.round(progress)}%`;
 }
 
-// Load tasks from localStorage
-function loadTasks() {
-    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    tasks.forEach(task => {
-        const taskItem = document.createElement('li');
-        taskItem.textContent = task.text;
-
-        if (task.checked) {
-            taskItem.classList.add('checked');
-        }
-
-        const deleteBtn = document.createElement('span');
-        deleteBtn.textContent = '✖';
-        deleteBtn.classList.add('delete-btn');
-        deleteBtn.onclick = () => {
-            taskItem.remove();
-            saveTasks();
-            updateCounter();
-        };
-
-        taskItem.appendChild(deleteBtn);
-        taskItem.onclick = () => {
-            taskItem.classList.toggle('checked');
-            saveTasks();
-            updateCounter();
-        };
-
-        listContainer.appendChild(taskItem);
-    });
+// Change Background
+function changeBackground() {
+    const colors = ['#3a6186', '#89253e', '#4e54c8', '#8f94fb', '#36d1dc'];
+    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+    document.querySelector('.container').style.background = `linear-gradient(135deg, ${randomColor}, ${randomColor})`;
 }
 
-// Clear all tasks
+// Search Tasks
+function searchTasks() {
+    const query = document.getElementById('search-box').value.toLowerCase();
+    Array.from(listContainer.children).forEach(task => {
+        const text = task.textContent.toLowerCase();
+        task.style.display = text.includes(query) ? '' : 'none';
+    });
+}
+// Clear All Tasks
 function clearTasks() {
-    if (confirm('Are you sure you want to clear all tasks?')) {
-        listContainer.innerHTML = '';
-        saveTasks();
-        updateCounter();
-    }
+    listContainer.innerHTML = ''; // Remove all tasks from the list
+    inputBox.value = ''; // Clear the input box
+    document.getElementById('search-box').value = ''; // Clear the search box
+    updateCounter(); // Update task counter
+    updateProgress(); // Reset progress bar
 }
+
