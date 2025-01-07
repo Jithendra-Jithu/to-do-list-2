@@ -150,3 +150,26 @@ ul li span:hover {
         padding: 10px 6px 10px 40px;
     }
 }
+.task-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #495057;
+}
+
+.task-footer button {
+    padding: 10px 20px;
+    font-size: 14px;
+    background: #d63384;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.task-footer button:hover {
+    background: #c82373;
+}

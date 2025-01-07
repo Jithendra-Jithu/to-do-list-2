@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToDo-List</title>
+    <title>To-Do List</title>
     <link rel="stylesheet" href="./style/style.css">
 </head>
 <body>
@@ -15,11 +15,11 @@
                 <input type="text" id="input-box" placeholder="Add your task here">
                 <button onclick="addTask()">Add</button>
             </div>
-            <ul id="list-container">
-                <!-- <li class="checked">task 1</li>
-                <li>task 2</li>
-                <li>task 3</li> -->
-            </ul>
+            <ul id="list-container"></ul>
+            <div class="task-footer">
+                <p id="task-counter">Total: 0 | Completed: 0</p>
+                <button onclick="clearTasks()">Clear All</button>
+            </div>
         </div>
     </div>
     <script src="./script/script.js"></script>
